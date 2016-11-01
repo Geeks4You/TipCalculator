@@ -26,10 +26,10 @@ namespace TipCalculator
         {
 
             // Variables Initialized
-            var tipPercent = 0.0;    // Tip Percentage Amount
-            var total = 0.0;         // Bill Amount, before taxes
-            var aPay = 0.0;          // Total Amount to Pay, including Tip
-            var tip = 0.0;           // Tip Amount
+            var percent = 0.0;      // Tip Percentage Amount
+            var total = 0.0;        // Bill Amount, before taxes
+            var pay = 0.0;          // Total Amount to Pay, including Tip
+            var tip = 0.0;          // Tip Amount
 
             // Welcome Message
             Console.WriteLine("\n\t\t\tWELCOME TO TIP CALCULATOR!");
@@ -42,15 +42,15 @@ namespace TipCalculator
             total = billAmt ();
 
             // Call Method to display Menu with Tip Options and capture selection
-            tipPercent = optMenu ();
+            percent = optMenu ();
 
             // Call Method to Calculate the Tip Amount and Total Amount to Pay, including Tip
-            amtPay (total, tipPercent, out tip, out aPay);
+            amtPay (total, percent, out tip, out pay);
 
             // Display the Required Resulting Values
             Console.WriteLine("\n\tBILL AMOUNT, TIP AMOUNT, TOTAL TO PAY VALUES");
             Console.WriteLine("\n\t****************************************************************");
-            Console.WriteLine ("\n\tBill Amount, before taxes: \t\t\t{0:C2} \n\tCalculated Tip, based on option: \t\t{1:C2} \n\tCalculated Amount to Pay, including Tip: \t{2:C2}", total, tip, aPay);
+            Console.WriteLine ("\n\tBill Amount, before taxes: \t\t\t{0:C2} \n\tCalculated Tip, based on option: \t\t{1:C2} \n\tCalculated Amount to Pay, including Tip: \t{2:C2}", total, tip, pay);
             Console.WriteLine("\n\t****************************************************************");
 
             // Display Thank you Message
@@ -152,13 +152,13 @@ namespace TipCalculator
         /// <param name="tip">Calculated Tip Amount</param>
         /// <param name="aPay">Calculated Total Amount to Pay, including Tip</param>
 
-        static void amtPay(double total, double tipPercent, out double tip, out double aPay)
+        static void amtPay(double total, double percent, out double tip, out double pay)
         {
             // Calculate the Tip Amount
-            tip = total * tipPercent;
+            tip = total * percent;
 
             // Calculate the Total Amount to Pay, including Tip
-            aPay = total + tip;
+            pay = total + tip;
         }
 
     }
