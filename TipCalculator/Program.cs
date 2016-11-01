@@ -26,119 +26,105 @@ namespace TipCalculator
         {
 
             // Variables Initialized
-
             var tipPercent = 0.0;    // Tip Percentage Amount
-            var stotal = 0.0;        // Bill Amount, before taxes
-            var total = 0.0;         // Total Amount to Pay, including Tip
+            var total = 0.0;         // Bill Amount, before taxes
+            var aPay = 0.0;          // Total Amount to Pay, including Tip
             var tip = 0.0;           // Tip Amount
 
             // Welcome Message
-            Console.WriteLine("\n\t\tWELCOME TO TIP CALCULATOR!");
-            Console.WriteLine("\n\t*****************************************************");
+            Console.WriteLine("\n\t\t\tWELCOME TO TIP CALCULATOR!");
+            Console.WriteLine("\n\t****************************************************************");
 
             // Prompt for Bill Amount, before tax
-            Console.Write ("\n\tPlease Enter your Bill Amount, before tax: ");
+            Console.Write ("\n\tPlease Enter the Bill Amount, before tax: ");
 
-            // Call Method for Bill Amount, before taxes
-            stotal = getBillstotal ();
+            // Call Method to capture the Bill Amount, before taxes and validate input value
+            total = billAmt ();
 
-            // Call Method to Display Menu with Tip Options
-            tipPercent = getTipOptMenu ();
+            // Call Method to display Menu with Tip Options and capture selection
+            tipPercent = optMenu ();
 
             // Call Method to Calculate the Tip Amount and Total Amount to Pay, including Tip
-            calcAmtPay (stotal, tipPercent, out tip, out total);
+            amtPay (total, tipPercent, out tip, out aPay);
 
             // Display the Required Resulting Values
             Console.WriteLine("\n\tBILL AMOUNT, TIP AMOUNT, TOTAL TO PAY VALUES");
-            Console.WriteLine("\n\t*****************************************************");
-            Console.WriteLine ("\n\tBill Amount, before taxes: \t\t{0:C2} \n\tCalculated Tip, based on option: \t{1:C2} \n\tTotal Amount to Pay, including Tip: \t{2:C2}", stotal, tip, total);
-            Console.WriteLine("\n\t*****************************************************");
+            Console.WriteLine("\n\t****************************************************************");
+            Console.WriteLine ("\n\tBill Amount, before taxes: \t\t\t{0:C2} \n\tCalculated Tip, based on option: \t\t{1:C2} \n\tCalculated Amount to Pay, including Tip: \t{2:C2}", total, tip, aPay);
+            Console.WriteLine("\n\t****************************************************************");
+
+            // Display Thank you Message
             Console.WriteLine("\n\tThank you for using Tip Calculator!");
+
             Console.ReadKey ();
         }
 
-        /// <summary>
-        /// Method requests a positive, non-zero numeric Bill Amount, before taxes
-        /// </summary>
-        /// <returns>Valid Bill Amount used in calculation</returns>
-
-        static double getBillstotal()
+        // Method captures the Bill Amount, before taxes and validates proper input
+        static double billAmt()
         {
             // Variable for Bill Amount, before taxes
-            var stotal = 0.0;
+            var total = 0.0;
 
             // Validate input is numeric
-            if (Double.TryParse (Console.ReadLine (), out stotal))
+            if (Double.TryParse (Console.ReadLine (), out total))
             {
 
-                // Validate input is a positive number less than or equal to zero
-                if (stotal <= 0.0)
+                // Validate input is a positive number
+                if (total <= 0.0)
                 {
-                    // Error Message
-                    Console.WriteLine ("\n\tSorry, you enter a zero or a negative number. Please try again.");
+                    // Error Message if input is zero or a negative number
+                    Console.WriteLine ("\n\tSorry, you enter a number zero or less. Please try again.");
 
                     // Prompt for Bill Amount, before tax, again
-                    Console.Write("\n\tPlease Enter your Total Bill Amount, before tax: ");
+                    Console.Write("\n\tPlease Enter the Total Bill Amount, before tax: ");
 
                     // Call Method again
-                    stotal = getBillstotal ();
+                    total = billAmt ();
                 }
             }
-            else    // Validate input is non-numeric
+            else    // Validate input is numeric
             {
-                // Error Message
+                // Error Message if input is not numeric
                 Console.WriteLine ("\n\tSorry, you entered a non-numeric value. Please try again.");
 
                 // Prompt for Bill Amount, before tax, again
-                Console.Write("\n\tPlease Enter your Total Bill Amount, before tax: ");
+                Console.Write("\n\tPlease Enter the Total Bill Amount, before tax: ");
 
                 // Call Method again
-                stotal = getBillstotal ();
+                total = billAmt ();
             }
 
-            return stotal;
+            return total;
         }
 
         /// <summary>
-        /// Method that Displays a Tip Option Menu
+        /// Method displays Tip Option Menu and captures the Tip Option and Percentage 
+        /// selection used to calculate Total Amount to Pay
         /// </summary>
-        /// <param name="PercentOpt1">Tip Percentage Option #1</param>
-        /// <param name="PercentOpt2">Tip Percentage Option #2</param>
+        /// <returns>Selected Percentage used in Calculation</returns>
 
-        static void displayTipMenu (double Opt1, double Opt2)
+        static double optMenu()
         {
-            // Method creates a Menu using parameters
-            Console.WriteLine("\n\tTIP PERCENTAGE OPTION MENU");
-            Console.WriteLine("\n\t*****************************************************");
-            Console.WriteLine("\n\tPlease select a tip option for this bill. \n");
+            // Variables Initialized
+            double Opt1 = 0.15;   // Option 1 Percentage Amount
+            double Opt2 = 0.20;   // Option 2 Percentage Amount
+            string OptSel;        // String to hold Option selection
+            var percent = 0.0;    // Percentage Amount based on option selected
+
+            // Display Tip Option Menu
+            Console.WriteLine("\n\tTIP OPTION MENU");
+            Console.WriteLine("\n\t****************************************************************");
+            Console.WriteLine("\n\tPlease select a tip amount to include with this bill. \n");
             Console.WriteLine("\t1.\t{0:P0}", Opt1);
             Console.WriteLine("\t2.\t{0:P0}", Opt2);
-            Console.WriteLine("\n\t*****************************************************\n");
+            Console.WriteLine("\n\t****************************************************************");
             Console.Write("\n\t: ");
-        }
 
-        /// <summary>
-        /// Method prompts for a tip option that will be applied against the bill amount
-        /// </summary>
-        /// <param name="PercentOpt1">Percentage Option #1</param>
-        /// <param name="PercentOpt2">Percentage Option #2</param>
-        /// <returns>Percentage Option Selected</returns>
-
-        static double getTipOptMenu(double Opt1 = 0.15, double Opt2 = 0.20)
-        {
-            // Variable Declarations
-
-            string optionSel;        // String to hold Option selection
-            var percent = 0.0;       // Percentage Amount based on option selected
-
-            // Call Method to Display Tip Option Menu
-            displayTipMenu (Opt1, Opt2);
-
-            // Get User Input
-            optionSel = Console.ReadLine ();
+            // Get Option Selected
+            OptSel = Console.ReadLine ();
 
             // Determine Tip Percentage Amount based on the Menu Option selected
-            switch (optionSel)
+            switch (OptSel)
             {
                 case "1":
                     percent = Opt1;
@@ -148,10 +134,10 @@ namespace TipCalculator
                     break;
                 default:
                     // Error Message
-                    Console.WriteLine ("\n\tSorry, there was an input error. Please select options 1 or 2.");
+                    Console.WriteLine ("\n\tSorry, your menu selection is invalid. Please try again.");
 
                     // Call Method again
-                    percent = getTipOptMenu (Opt1, Opt2);
+                    percent = optMenu ();
                     break;
             }
 
@@ -161,18 +147,18 @@ namespace TipCalculator
         /// <summary>
         /// Method Calculates the Tip Amount and Total Amount to Pay, including Tip
         /// </summary>
-        /// <param name="stotal">Bill Amount, before taxes</param>
-        /// <param name="tipPercent">Tip Percentage Amount Selected</param>
-        /// <param name="tip">Tip Amount</param>
-        /// <param name="total">Total Amount to Pay, including Tip</param>
+        /// <param name="total">Bill Amount, before taxes</param>
+        /// <param name="tipPercent">Tip Percentage Amount</param>
+        /// <param name="tip">Calculated Tip Amount</param>
+        /// <param name="aPay">Calculated Total Amount to Pay, including Tip</param>
 
-        static void calcAmtPay(double stotal, double tipPercent, out double tip, out double total)
+        static void amtPay(double total, double tipPercent, out double tip, out double aPay)
         {
             // Calculate the Tip Amount
-            tip = stotal * tipPercent;
+            tip = total * tipPercent;
 
             // Calculate the Total Amount to Pay, including Tip
-            total = stotal + tip;
+            aPay = total + tip;
         }
 
     }
